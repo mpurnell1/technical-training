@@ -31,6 +31,10 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="name"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
