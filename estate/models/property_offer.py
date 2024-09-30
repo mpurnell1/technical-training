@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -29,10 +30,15 @@ class PropertyOffer(models.Model):
 
     # Action methods
     def action_accept(self):
+        already_accepted = False
         for record in self:
-            record.status = 'accepted'
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+            if not already_accepted:
+                already_accepted = True
+                record.status = 'accepted'
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
+            else:
+                raise UserError("You can only accept one offer at a time.")
 
     def action_refuse(self):
         for record in self:
