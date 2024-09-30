@@ -1,7 +1,6 @@
 from odoo import fields, models
-from odoo.tools.date_utils import add
 
-class EstateProperty(models.Model):
+class Property(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
 
@@ -9,7 +8,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(string="Available From", copy=False, default=add(fields.Date.today(), days=90))
+    date_availability = fields.Date(string="Available From", copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -25,6 +24,7 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     # Reserved fields
     active = fields.Boolean(default=True)
