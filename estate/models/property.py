@@ -33,6 +33,15 @@ class Property(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price') or [0])
 
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if not self.garden:
+            self.garden_area = 0
+            self.garden_orientation = False
+        else:
+            self.garden_area = 100
+            self.garden_orientation = 'n'
+
     # Relational fields
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
