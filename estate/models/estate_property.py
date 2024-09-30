@@ -5,8 +5,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
 
-    active = fields.Boolean()
-
+    # Custom fields
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -20,3 +19,6 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([('n', 'North'), ('e', 'East'), ('s', 'South'), ('w', 'West')])
+
+    # Reserved fields
+    active = fields.Boolean(default=True)
