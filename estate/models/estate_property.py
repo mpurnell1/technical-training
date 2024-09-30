@@ -22,3 +22,9 @@ class EstateProperty(models.Model):
 
     # Reserved fields
     active = fields.Boolean(default=True)
+    state = fields.Selection([
+        ('new', 'New'),
+        ('received', 'Offer Received'),
+        ('accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('canceled', 'Canceled')], default='new', copy=False)
