@@ -31,7 +31,7 @@ class Property(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price')) or 0
+            record.best_price = max(record.offer_ids.mapped('price') or [0])
 
     # Relational fields
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
