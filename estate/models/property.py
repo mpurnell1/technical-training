@@ -39,7 +39,7 @@ class Property(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
         else:
-            self.garden_area = 100
+            self.garden_area = 10
             self.garden_orientation = 'n'
 
     # Relational fields
@@ -57,3 +57,14 @@ class Property(models.Model):
         ('accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('canceled', 'Canceled')])
+
+    # Action methods
+    def action_sold(self):
+        if self.state == 'canceled':
+            raise UserError("You cannot sell a canceled property.")
+        self.state = 'sold'
+
+    def action_cancel(self):
+        if self.state == 'sold':
+            raise UserError("You cannot cancel a sold property.")
+        self.state = 'canceled'
