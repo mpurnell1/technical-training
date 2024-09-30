@@ -25,4 +25,4 @@ class PropertyOffer(models.Model):
     @api.depends('create_date', 'date_deadline')
     def _inverse_date_deadline(self):
         for record in self:
-            record.validity = fields.Date.subtract(record.date_deadline, record.create_date).days
+            record.validity = (record.date_deadline - record.create_date.date()).days
