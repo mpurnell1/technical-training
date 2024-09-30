@@ -13,6 +13,7 @@
             <list string="Property">
                 <field name="name"/>
                 <field name="property_type_id"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -30,8 +31,9 @@
             <form string="Estate Property">
                 <sheet>
                     <group>
+                        <field name="name"/>
+                        <field name="tag_ids" widget="many2many_tags"/>
                         <group>
-                            <field name="name"/>
                             <field name="state"/>
                         </group>
                         <group>
