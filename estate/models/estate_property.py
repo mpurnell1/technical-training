@@ -20,6 +20,9 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([('n', 'North'), ('e', 'East'), ('s', 'South'), ('w', 'West')])
 
+    # Relational fields
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+
     # Reserved fields
     active = fields.Boolean(default=True)
     state = fields.Selection(string="Status", default='new', copy=False, selection=[
