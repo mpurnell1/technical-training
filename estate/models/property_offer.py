@@ -36,15 +36,18 @@ class PropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days
 
     # Object methods
-    @api.model
-    def create(self, values):
-        property_obj = self.env['estate.property'].browse(values['property_id'])
-        if property_obj.state == 'new':
-            property_obj.state = 'received'
-        elif property_obj.state == 'received' and not float_is_zero(property_obj.best_price, precision_digits=2) and \
-            float_compare(values['price'], property_obj.best_price, precision_digits=2) == -1:
-            raise UserError("You cannot make an offer with a price lower than the best offer.")
-        return super(PropertyOffer, self).create(values)
+    @api.model_create_multi
+    def create(self, values_list):
+        records = []
+        for values in values_list:
+            property_obj = self.env['estate.property'].browse(values['property_id'])
+            if property_obj.state == 'new':
+                property_obj.state = 'received'
+            elif property_obj.state == 'received' and not float_is_zero(property_obj.best_price, precision_digits=2) and \
+                float_compare(values['price'], property_obj.best_price, precision_digits=2) == -1:
+                raise UserError("You cannot make an offer with a price lower than the best offer.")
+            records.append(super(PropertyOffer, self).create(values))
+        return records
 
     # Action methods
     def action_accept(self):
