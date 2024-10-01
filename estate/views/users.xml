@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <page name="preferences" position="after">
-                <page>
+                <page name="properties" string="Real Estate Properties">
                     <group>
                         <field name="property_ids"/>
                     </group>
