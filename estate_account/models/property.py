@@ -10,7 +10,7 @@ class Property(models.Model):
     def action_sold(self):
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
-            'move_type': 'out_invoice'
+            'move_type': 'out_invoice',
             'invoice_line_ids': [
                 Command.create({
                     'name': f'Commission for {self.name}',
