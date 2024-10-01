@@ -1,5 +1,8 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -37,6 +40,7 @@ class PropertyOffer(models.Model):
     @api.model
     def create(self, values):
         obj = self.env['estate.property'].browse(values['property_id'])
+        _logger.warning(f'Property: {obj} state: {obj.state} price: {values["price"]} best_price: {obj.best_price}')
         if obj.state == 'new':
             obj.state = 'offer_received'
         elif obj.state == 'offer_received' and \
