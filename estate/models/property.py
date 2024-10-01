@@ -82,11 +82,15 @@ class Property(models.Model):
 
     # Action methods
     def action_sold(self):
-        if self.state == 'canceled':
-            raise UserError("You cannot sell a canceled property.")
-        self.state = 'sold'
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError("You cannot sell a canceled property.")
+            record.state = 'sold'
+        return True
 
     def action_cancel(self):
-        if self.state == 'sold':
-            raise UserError("You cannot cancel a sold property.")
-        self.state = 'canceled'
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("You cannot cancel a sold property.")
+            record.state = 'canceled'
+        return True
