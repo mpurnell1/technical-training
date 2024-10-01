@@ -10,6 +10,7 @@
         'views/property_type_views.xml',
         'views/property_views.xml',
         'views/menus.xml',
+        'views/users.xml',
     ],
     "installable": True,
     'license': 'LGPL-3',
