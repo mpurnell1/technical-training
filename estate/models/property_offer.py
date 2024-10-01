@@ -1,8 +1,7 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
-import logging
+from odoo.tools.float_utils import float_compare, float_is_zero
 
-_logger = logging.getLogger(__name__)
 
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -39,15 +38,13 @@ class PropertyOffer(models.Model):
     # Object methods
     @api.model
     def create(self, values):
-        obj = self.env['estate.property'].browse(values['property_id'])
-        _logger.warning(f'Property: {obj} state: {obj.state} price: {values["price"]} best_price: {obj.best_price}')
-        if obj.state == 'new':
-            obj.state = 'offer_received'
-        elif obj.state == 'offer_received' and \
-            float_compare(values['price'], obj.best_price, precision_digits=2) > 0:
+        property_obj = self.env['estate.property'].browse(values['property_id'])
+        if property_obj.state == 'new':
+            property_obj.state = 'received'
+        elif property_obj.state == 'received' and not float_is_zero(property_obj.best_price, precision_digits=2) and \
+            float_compare(values['price'], property_obj.best_price, precision_digits=2) == -1:
             raise UserError("You cannot make an offer with a price lower than the best offer.")
-        record = super(PropertyOffer, self).create(values)
-        return record
+        return super(PropertyOffer, self).create(values)
 
     # Action methods
     def action_accept(self):
