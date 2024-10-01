@@ -30,16 +30,16 @@ class PropertyOffer(models.Model):
 
     # Action methods
     def action_accept(self):
-        already_accepted = False
         for record in self:
-            if not already_accepted:
-                already_accepted = True
-                record.status = 'accepted'
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.selling_price = record.price
-            else:
+            if record.property.buyer_id:
                 raise UserError("You can only accept one offer at a time.")
+            record.status = 'accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
 
     def action_refuse(self):
         for record in self:
+            if record.status == 'accepted':
+                record.buyer_id = False
+                record.property_id.selling_price = 0
             record.status = 'refused'
