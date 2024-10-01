@@ -6,9 +6,11 @@ class PropertyType(models.Model):
     _description = 'Real Estate Property Type'
     _order = 'name'
 
+    # Custom fields
     name = fields.Char(required=True)
     sequence = fields.Integer(default=1)
 
+    # Relational fields
     property_ids = fields.One2many('estate.property', 'property_type_id', string="Properties")
 
     # Constraints

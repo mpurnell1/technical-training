@@ -4,6 +4,7 @@ from odoo import models, Command
 class Property(models.Model):
     _inherit = 'estate.property'
 
+    # Action methods
     def action_sold(self):
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,

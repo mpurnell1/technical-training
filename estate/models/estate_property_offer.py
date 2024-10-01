@@ -8,6 +8,7 @@ class PropertyOffer(models.Model):
     _description = 'Real Estate Property Offer'
     _order = 'price desc'
 
+    # Custom fields
     price = fields.Float()
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', required=True)
