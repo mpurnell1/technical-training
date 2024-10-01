@@ -50,6 +50,12 @@ class Property(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
+    # Constraints
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+    ]
+
     # Reserved fields
     active = fields.Boolean(default=True)
     state = fields.Selection(string="Status", default='new', copy=False, selection=[

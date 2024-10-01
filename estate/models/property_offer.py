@@ -10,6 +10,10 @@ class PropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
 
+    # Constraints
+    _sql_constraints = [
+        ('check_price', 'CHECK(price >= 0)', 'The price must be positive.'),
+
     # Computed fields
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute='_compute_date_deadline', inverse='_inverse_date_deadline')
@@ -27,6 +31,7 @@ class PropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
 
     # Action methods
     def action_accept(self):
