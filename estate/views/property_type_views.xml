@@ -15,8 +15,30 @@
                     <group>
                         <field name="name"/>
                     </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Type">
+                <field name="name"/>
+                <field name="sequence" widget="handle"/>
+            </list>
         </field>
     </record>
 </odoo>

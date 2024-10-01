@@ -10,7 +10,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Property">
+            <list string="Property" decoration-success="state in ['received', 'accepted']" decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags"/>
@@ -19,7 +19,7 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -30,17 +30,16 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold" type="object" string="Mark as Sold"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
-
+                    <button name="action_sold" type="object" string="Mark as Sold" invisible="state == 'sold'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'canceled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold"/>
                 </header>
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -59,23 +58,13 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" widget="one2many_list">
-                                <list>
-                                    <field name="price"/>
-                                    <field name="partner_id"/>
-                                    <field name="validity"/>
-                                    <field name="date_deadline"/>
-                                    <button name="action_accept" title="Accept" type="object" icon="fa-check"/>
-                                    <button name="action_refuse" title="Refuse" type="object" icon="fa-times"/>
-                                    <field name="status"/>
-                                </list>
-                            </field>
+                            <field name="offer_ids" widget="one2many_list" readonly="state in ['accepted', 'sold', 'canceled']"/>
                         </page>
                         <page string="Other Info">
                             <group>

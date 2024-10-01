@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Real Estate Property Offer'
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
