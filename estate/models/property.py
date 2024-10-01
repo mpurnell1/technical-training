@@ -74,7 +74,7 @@ class Property(models.Model):
         ('canceled', 'Canceled')])
 
     # Object methods
-    @api.ondelete()
+    @api.ondelete(at_uninstall=False)
     def _check_unlink(self):
         for record in self:
             if record.state not in ['new', 'canceled']:
