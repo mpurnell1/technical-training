@@ -39,7 +39,6 @@ class PropertyOffer(models.Model):
     # Object methods
     @api.model_create_multi
     def create(self, values_list):
-        records = []
         for values in values_list:
             property_obj = self.env['estate.property'].browse(values['property_id'])
             if property_obj.state == 'new':
@@ -47,8 +46,7 @@ class PropertyOffer(models.Model):
             elif property_obj.state == 'received' and not float_is_zero(property_obj.best_price, precision_digits=2) and \
                 float_compare(values['price'], property_obj.best_price, precision_digits=2) == -1:
                 raise UserError("You cannot make an offer with a price lower than the best offer.")
-            records.append(super(PropertyOffer, self).create(values))
-        return records
+        return super(PropertyOffer, self).create(values_list)
 
     # Action methods
     def action_accept(self):
