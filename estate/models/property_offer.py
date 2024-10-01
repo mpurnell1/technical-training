@@ -40,7 +40,7 @@ class PropertyOffer(models.Model):
         if obj.state == 'new':
             obj.state = 'offer_received'
         elif obj.state == 'offer_received' and \
-            float_compare(value['price'], obj.best_price, precision_digits=2) > 0:
+            float_compare(values['price'], obj.best_price, precision_digits=2) > 0:
             raise UserError("You cannot make an offer with a price lower than the best offer.")
         record = super(PropertyOffer, self).create(values)
         return record

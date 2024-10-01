@@ -75,7 +75,7 @@ class Property(models.Model):
 
     # Object methods
     @api.ondelete(at_uninstall=False)
-    def _check_unlink(self):
+    def _unlink_if_new_or_cancelled(self):
         for record in self:
             if record.state not in ['new', 'canceled']:
                 raise UserError("You cannot delete a property that is not new or canceled.")
