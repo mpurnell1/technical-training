@@ -6,20 +6,23 @@ class Property(models.Model):
 
     # Action methods
     def action_sold(self):
-        self.env['account.move'].create({
-            'partner_id': self.buyer_id.id,
-            'move_type': 'out_invoice',
-            'invoice_line_ids': [
-                Command.create({
-                    'name': f'Commission for {self.name}',
-                    'quantity': 1,
-                    'price_unit': self.selling_price * 0.06,
-                }),
-                Command.create({
-                    'name': 'Administrative Fees',
-                    'quantity': 1,
-                    'price_unit': 100,
-                })
-            ]
-        })
+        vals_list = []
+        for record in self:
+            vals_list.append({
+                'partner_id': record.buyer_id.id,
+                'move_type': 'out_invoice',
+                'invoice_line_ids': [
+                    Command.create({
+                        'name': f'Commission for {record.name}',
+                        'quantity': 1,
+                        'price_unit': record.selling_price * 0.06,
+                    }),
+                    Command.create({
+                        'name': 'Administrative Fees',
+                        'quantity': 1,
+                        'price_unit': 100,
+                    })
+                ]
+            })
+        self.env['account.move'].create(vals_list)
         return super(Property, self).action_sold()
