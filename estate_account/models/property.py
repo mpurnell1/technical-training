@@ -8,5 +8,5 @@ class Property(models.Model):
     _inherit = 'estate.property'
 
     def action_sold(self):
-        _logger.warning('Overridden method called')
+        self.env['account.move'].create({'partner_id': self.buyer_id.id, 'move_type': 'out_invoice'})
         return super(Property, self).action_sold()
