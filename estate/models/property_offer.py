@@ -52,6 +52,7 @@ class PropertyOffer(models.Model):
             if record.property_id.buyer_id:
                 raise UserError("You can only accept one offer at a time.")
             record.status = 'accepted'
+            record.property_id.state = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
 
