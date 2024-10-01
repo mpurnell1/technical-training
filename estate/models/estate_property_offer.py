@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.float_utils import float_compare
 
 
 class PropertyOffer(models.Model):
@@ -44,9 +44,10 @@ class PropertyOffer(models.Model):
             property_obj = self.env['estate.property'].browse(values['property_id'])
             if property_obj.state == 'new':
                 property_obj.state = 'received'
-            elif property_obj.state == 'received' and not float_is_zero(property_obj.best_price, precision_digits=2) and \
-                float_compare(values['price'], property_obj.best_price, precision_digits=2) == -1:
-                raise UserError("You cannot make an offer with a price lower than the best offer.")
+            elif property_obj.state == 'received' and property_obj.offer_ids:
+                min_price = min(property_obj.offer_ids.mapped('price'))
+                if float_compare(values['price'], min_price, precision_digits=2) == -1:
+                    raise UserError("You cannot make an offer with a price below the lowest offer.")
         return super(PropertyOffer, self).create(values_list)
 
     # Action methods
