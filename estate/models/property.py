@@ -62,7 +62,7 @@ class Property(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and \
                 float_compare(record.selling_price, (record.expected_price*9/10), precision_digits=2) == -1:
-                raise UserError("The selling price must be at least 90%% of the expected price.")
+                raise UserError("The selling price must be at least 90% of the expected price.")
 
     # Reserved fields
     active = fields.Boolean(default=True)
@@ -72,6 +72,13 @@ class Property(models.Model):
         ('accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('canceled', 'Canceled')])
+
+    # Object methods
+    @api.ondelete()
+    def _check_unlink(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError("You cannot delete a property that is not new or canceled.")
 
     # Action methods
     def action_sold(self):

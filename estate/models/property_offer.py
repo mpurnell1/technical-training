@@ -33,6 +33,17 @@ class PropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
+    # Object methods
+    @api.model
+    def create(self, values):
+        obj = self.env['estate.property'].browse(values['property_id'])
+        if obj.state == 'new':
+            obj.state = 'offer_received'
+        elif obj.state == 'offer_received' and \
+            float_compare(value['price'], obj.best_price, precision_digits=2) > 0:
+            raise UserError("You cannot make an offer with a price lower than the best offer.")
+        record = super(PropertyOffer, self).create(values)
+        return record
 
     # Action methods
     def action_accept(self):
