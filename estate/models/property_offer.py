@@ -13,6 +13,7 @@ class PropertyOffer(models.Model):
     # Constraints
     _sql_constraints = [
         ('check_price', 'CHECK(price >= 0)', 'The price must be positive.'),
+    ]
 
     # Computed fields
     validity = fields.Integer(string="Validity (days)", default=7)
