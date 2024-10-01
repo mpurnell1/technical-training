@@ -2,6 +2,7 @@ from odoo import fields, models, api
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+
 class Property(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'

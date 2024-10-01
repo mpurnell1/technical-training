@@ -1,7 +1,4 @@
-from odoo import fields, models, Command
-import logging
-
-_logger = logging.getLogger(__name__)
+from odoo import models, Command
 
 
 class Property(models.Model):
