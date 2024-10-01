@@ -57,10 +57,10 @@ class Property(models.Model):
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
     ]
 
-    @api.constrains('selling_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price) and float_compare(record.selling_price, (record.expected_price*9/10) == -1):
+            if not float_is_zero(record.selling_price) and float_compare(record.selling_price, (record.expected_price*9/10), 2) == -1:
                 raise UserError("The selling price must be at least 90%% of the expected price.")
 
     # Reserved fields

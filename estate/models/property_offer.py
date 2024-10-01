@@ -12,7 +12,7 @@ class PropertyOffer(models.Model):
 
     # Constraints
     _sql_constraints = [
-        ('check_price', 'CHECK(price >= 0)', 'The price must be positive.'),
+        ('check_price', 'CHECK(price >= 0)', 'The offer price must be positive.'),
     ]
 
     # Computed fields
