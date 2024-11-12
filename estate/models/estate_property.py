@@ -84,13 +84,13 @@ class EstateProperty(models.Model):
 
     # Action methods
     def action_sold(self):
-        for property in self.filtered(lambda p: p.state == 'canceled'):
+        for _ in self.filtered(lambda p: p.state == 'canceled'):
             raise UserError("You cannot sell a canceled property.")
-        property.state = 'sold'
+        self.state = 'sold'
         return True
 
     def action_cancel(self):
-        for property in self.filtered(lambda p: p.state == 'sold'):
+        for _ in self.filtered(lambda p: p.state == 'sold'):
             raise UserError("You cannot cancel a sold property.")
-        property.state = 'canceled'
+        self.state = 'canceled'
         return True
